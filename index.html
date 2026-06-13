@@ -337,6 +337,30 @@
       line-height: 1.4;
     }
 
+    .meal-result {
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .meal-result strong {
+      color: var(--accent-dark);
+    }
+
+    .meal-result ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .meal-result li {
+      margin: 5px 0;
+    }
+
     .care-note {
       margin: 12px 0;
       padding: 14px;
@@ -1038,6 +1062,78 @@
       return count;
     }
 
+    function pickProducts(text, patterns) {
+      const lower = text.toLowerCase();
+      return patterns
+        .filter((item) => item.words.some((word) => lower.includes(word)))
+        .map((item) => item.label);
+    }
+
+    function unique(items) {
+      return [...new Set(items)];
+    }
+
+    function listOrFallback(items, fallback) {
+      return items.length ? items.join(", ") : fallback;
+    }
+
+    function buildMealSuggestion(text) {
+      if (!text.trim()) {
+        return "Сначала напиши, что есть дома: например, яйца, рис, огурцы, помидоры, зелень.";
+      }
+
+      const proteins = unique(pickProducts(text, [
+        { label: "яйца", words: ["яйц", "омлет"] },
+        { label: "печёночные котлеты", words: ["печеноч", "печёноч", "котлет"] },
+        { label: "рыба", words: ["рыб", "лосос", "треск", "скумбр", "сельд"] },
+        { label: "птица", words: ["куриц", "индейк", "птиц"] },
+        { label: "нут", words: ["нут"] },
+        { label: "фасоль", words: ["фасол"] },
+        { label: "сырники", words: ["сырник"] }
+      ]));
+
+      const fibers = unique(pickProducts(text, [
+        { label: "огурцы", words: ["огур"] },
+        { label: "помидоры", words: ["помид", "томат"] },
+        { label: "петрушка", words: ["петруш"] },
+        { label: "зелень", words: ["зелень", "укроп", "руккол", "шпинат", "салат"] },
+        { label: "капуста", words: ["капуст", "брокк"] },
+        { label: "ягоды", words: ["ягод", "черник", "голубик", "клубник", "малин"] },
+        { label: "яблоко", words: ["яблок"] }
+      ]));
+
+      const carbs = unique(pickProducts(text, [
+        { label: "рис басмати", words: ["рис", "басмати"] },
+        { label: "пшённая каша", words: ["пшен", "пшён"] },
+        { label: "гречка", words: ["греч"] },
+        { label: "нут", words: ["нут"] },
+        { label: "фасоль", words: ["фасол"] }
+      ]));
+
+      const fats = unique(pickProducts(text, [
+        { label: "оливковое масло", words: ["олив"] },
+        { label: "гхи", words: ["гхи"] },
+        { label: "авокадо", words: ["авокад"] },
+        { label: "орехи/семена", words: ["орех", "сем", "кунжут", "лен", "лён", "чиа"] }
+      ]));
+
+      const breakfastProtein = proteins.find((item) => item !== "нут" && item !== "фасоль") || proteins[0] || "добавить белок";
+      const lunchProtein = proteins[0] || "добавить белок";
+      const dinnerProtein = proteins.find((item) => !["нут", "фасоль", "сырники"].includes(item)) || "яйца/рыба/птица или другой лёгкий белок";
+      const fiberText = listOrFallback(fibers, "овощи и зелень");
+      const carbText = listOrFallback(carbs, "крупу или бобовые по голоду");
+      const fatText = listOrFallback(fats, "немного полезного жира");
+
+      return `
+        <strong>Что можно собрать:</strong>
+        <ul>
+          <li><strong>Завтрак:</strong> ${breakfastProtein} + ${fiberText} + ${fatText} + ${carbText}. Завтрак можно делать полноценным: белок, клетчатка, жиры и углеводы.</li>
+          <li><strong>Обед:</strong> ${lunchProtein} + ${fiberText} + ${carbText}. Обед может быть самым сытным приёмом пищи.</li>
+          <li><strong>Ужин:</strong> ${dinnerProtein} + ${fiberText}. Именно тебе доктор рекомендовала ужин без углеводов, поэтому рис, крупы, нут и фасоль лучше оставить на завтрак или обед.</li>
+        </ul>
+      `;
+    }
+
     function renderNav() {
       daysNav.innerHTML = "";
       for (let day = 1; day <= DAY_COUNT; day += 1) {
@@ -1097,12 +1193,35 @@
           <label for="meal-note-${activeDay}">Что есть дома / что планирую сегодня</label>
           <textarea id="meal-note-${activeDay}" placeholder="Например: рис басмати, печёночные котлеты, огурцы, помидоры, петрушка...">${state[mealKey(activeDay)] || ""}</textarea>
         </div>
+        <div class="footer-actions">
+          <button class="primary" id="build-meal-${activeDay}" type="button">Собрать из продуктов</button>
+          <button class="secondary" id="clear-meal-${activeDay}" type="button">Очистить</button>
+        </div>
+        <div class="meal-result" id="meal-result-${activeDay}">${state[`mealResult:d${activeDay}`] || "Напиши продукты выше и нажми «Собрать из продуктов». Я подскажу, что лучше на завтрак, обед и ужин."}</div>
       `;
-      mealBox.querySelector("textarea").addEventListener("input", (event) => {
+      const mealTextarea = mealBox.querySelector("textarea");
+      const mealResult = mealBox.querySelector(`#meal-result-${activeDay}`);
+
+      mealTextarea.addEventListener("input", (event) => {
         state[mealKey(activeDay)] = event.target.value;
         if (!event.target.value.trim()) {
           delete state[mealKey(activeDay)];
         }
+        saveState();
+      });
+
+      mealBox.querySelector(`#build-meal-${activeDay}`).addEventListener("click", () => {
+        const result = buildMealSuggestion(mealTextarea.value);
+        state[`mealResult:d${activeDay}`] = result;
+        mealResult.innerHTML = result;
+        saveState();
+      });
+
+      mealBox.querySelector(`#clear-meal-${activeDay}`).addEventListener("click", () => {
+        mealTextarea.value = "";
+        mealResult.textContent = "Напиши продукты выше и нажми «Собрать из продуктов». Я подскажу, что лучше на завтрак, обед и ужин.";
+        delete state[mealKey(activeDay)];
+        delete state[`mealResult:d${activeDay}`];
         saveState();
       });
       dayCard.appendChild(mealBox);
