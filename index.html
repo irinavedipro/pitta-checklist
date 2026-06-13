@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Чек-лист 30 дней | Pitta</title>
+  <meta name="description" content="Мобильный чек-лист на 30 дней для протокола регуляции нервной системы.">
+  <style>
+    :root {
+      --bg: #f6f1ea;
+      --paper: #fffaf2;
+      --text: #211f1c;
+      --muted: #746b61;
+      --line: #ded1c0;
+      --accent: #b75f31;
+      --accent-dark: #7f3f22;
+      --green: #47745c;
+      --soft: #f0e3d4;
+      --shadow: 0 16px 36px rgba(52, 38, 23, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      width: min(940px, 100%);
+      margin: 0 auto;
+      padding: 20px 14px 48px;
+    }
+
+    header {
+      padding: 12px 2px 18px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 9vw, 54px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 14px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .panel {
+      margin: 14px 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--accent-dark);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--soft);
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: var(--green);
+      transition: width 0.2s ease;
+    }
+
+    .settings {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .text-button {
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--accent-dark);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .days-nav {
+      display: flex;
+      gap: 8px;
+      margin: 14px 0;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .day-tab {
+      flex: 0 0 auto;
+      width: 54px;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .day-tab.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .day-tab.today {
+      border-color: var(--green);
+      box-shadow: inset 0 0 0 2px rgba(71, 116, 92, 0.3);
+    }
+
+    .day-card {
+      display: none;
+    }
+
+    .day-card.active {
+      display: block;
+    }
+
+    .day-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .day-head h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.1;
+    }
+
+    .day-date {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .day-score {
+      min-width: 96px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--accent-dark);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section h3 {
+      margin: 0 0 8px;
+      color: var(--accent-dark);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .habit {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .habit input {
+      width: 24px;
+      height: 24px;
+      margin: 0;
+      accent-color: var(--green);
+    }
+
+    .habit label {
+      color: var(--text);
+      font-size: 17px;
+    }
+
+    .habit input:checked + label {
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    .meal-box {
+      margin: 16px 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .meal-box h3 {
+      margin: 0 0 8px;
+      color: var(--accent-dark);
+      font-size: 18px;
+    }
+
+    .meal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .meal-card {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    .meal-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent-dark);
+    }
+
+    .meal-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meal-note {
+      margin-top: 10px;
+    }
+
+    .meal-note label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .meal-note textarea {
+      width: 100%;
+      min-height: 78px;
+      resize: vertical;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .primary {
+      min-height: 48px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .secondary {
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--accent-dark);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .hint {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .top-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 8px 0 14px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 8px 0;
+      background: var(--bg);
+    }
+
+    .top-tab {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--accent-dark);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .top-tab.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .soft-list {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .soft-list li {
+      margin: 6px 0;
+    }
+
+    details {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    summary {
+      padding: 12px;
+      color: var(--accent-dark);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    details .soft-list {
+      margin: 0;
+      padding: 0 18px 14px 32px;
+    }
+
+    @media (max-width: 620px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .top-tabs {
+        grid-template-columns: 1fr;
+        position: static;
+      }
+
+      .settings {
+        grid-template-columns: 1fr;
+      }
+
+      .day-head {
+        display: block;
+      }
+
+      .day-score {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .footer-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .meal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <p class="eyebrow">Протокол регуляции нервной системы</p>
+      <h1>Чек-лист 30 дней</h1>
+      <p class="lead">Гиперконтроль и хроническая мобилизация / Pitta. Отмечай выполненные пункты каждый день. Галочки сохраняются в этом браузере автоматически.</p>
+    </header>
+
+    <nav class="top-tabs" aria-label="Разделы">
+      <button class="top-tab active" type="button" data-view="checklistView">Чек-лист</button>
+      <button class="top-tab" type="button" data-view="recommendationsView">Рекомендации</button>
+      <button class="top-tab" type="button" data-view="pittaView">Pitta</button>
+    </nav>
+
+    <div class="view active" id="checklistView">
+    <section class="panel" aria-label="Зачем этот протокол">
+      <div class="intro-grid">
+        <div>
+          <h2>Зачем это</h2>
+          <p class="hint">Этот чек-лист нужен для восстановления нервной системы, контакта с телом и выхода из режима постоянного внутреннего напряжения.</p>
+          <p class="hint">Мой тест показал режим: гиперконтроль и хроническая мобилизация. Снаружи это может выглядеть как сила и ответственность, но внутри нервная система уже долго работает на пределе ресурсов.</p>
+        </div>
+        <div>
+          <h2>Фокус на 30 дней</h2>
+          <ul class="soft-list">
+            <li>ритм без перегруза;</li>
+            <li>умеренность вместо рывков;</li>
+            <li>мягкая телесная разрядка;</li>
+            <li>снижение внутреннего перегрева;</li>
+            <li>возвращение ясности, сна и способности восстанавливаться.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Прогресс">
+      <div class="stats">
+        <div class="stat">
+          <span>Всего выполнено</span>
+          <strong id="totalDone">0</strong>
+        </div>
+        <div class="stat">
+          <span>Общий прогресс</span>
+          <strong id="totalPercent">0%</strong>
+        </div>
+        <div class="stat">
+          <span>Дней закрыто</span>
+          <strong id="daysComplete">0/30</strong>
+        </div>
+      </div>
+      <div class="progress-bar" aria-label="Общий прогресс">
+        <div class="progress-fill" id="totalFill"></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Настройки">
+      <div class="settings">
+        <div class="field">
+          <label for="startDate">Дата первого дня</label>
+          <input id="startDate" type="date">
+        </div>
+        <button class="text-button" id="todayButton" type="button">Сегодня</button>
+      </div>
+      <p class="hint">Если начнёшь не сегодня, поменяй дату первого дня. Даты пересчитаются, галочки сохранятся.</p>
+    </section>
+
+    <nav class="days-nav" id="daysNav" aria-label="Дни чек-листа"></nav>
+    <section class="panel day-card active" id="dayCard" aria-live="polite"></section>
+
+    <section class="panel" aria-label="Шпаргалка здоровой тарелки">
+      <h2>Здоровая тарелка</h2>
+      <p class="hint">Короткая шпаргалка на каждый приём пищи: белок + клетчатка + полезные жиры + при необходимости медленные углеводы.</p>
+      <ul class="soft-list">
+        <li>5 вкусов: кислый, горький, сладкий, пряный, солёный;</li>
+        <li>5 цветов: зелёный, красный, жёлтый/оранжевый, белый, тёмный;</li>
+        <li>минимум половина тарелки — овощи, зелень, ягоды, клетчатка;</li>
+        <li>белок — в каждом приёме пищи;</li>
+        <li>для Pitta особенно полезно помнить про горький вкус и не перегревать себя острой/стимулирующей едой.</li>
+      </ul>
+    </section>
+
+    <section class="panel" aria-label="Идеи еды">
+      <h2>Идеи еды</h2>
+      <p class="hint">Когда непонятно, что поесть, собирай не «идеальное блюдо», а простую тарелку: белок + овощи/зелень + немного крупы или бобовых, если нужен более сытный приём пищи.</p>
+
+      <details open>
+        <summary>Быстрый конструктор</summary>
+        <ul class="soft-list">
+          <li>Белок: яйца, рыба, птица, печёночные котлеты, нут, фасоль, чечевица.</li>
+          <li>Клетчатка: огурцы, помидоры, зелень, капуста, листовые овощи, ягоды.</li>
+          <li>Углеводы: рис басмати, гречка, пшено, киноа, амарант.</li>
+          <li>Жиры: гхи, оливковое масло, авокадо, семена, орехи.</li>
+          <li>Для ужина лучше проще и мягче: без кофе, без острого, без тяжёлого переедания.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Завтраки</summary>
+        <ul class="soft-list">
+          <li>2 яйца + помидор + зелень + немного пшённой каши.</li>
+          <li>Пшённая каша + яйцо/сырники + ягоды или несладкое яблоко.</li>
+          <li>Омлет с зеленью и помидорами + огурец.</li>
+          <li>Сырники + ягоды + зелень/овощи отдельно, если хочется сделать завтрак устойчивее.</li>
+          <li>Если есть кофе, лучше после еды, а не вместо еды.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Обеды</summary>
+        <ul class="soft-list">
+          <li>Печёночные котлеты + рис басмати + огурцы, помидоры, петрушка.</li>
+          <li>Нут или фасоль + овощной салат + зелень + немного оливкового масла.</li>
+          <li>Рыба/птица + гречка или рис + большая порция овощей.</li>
+          <li>Тёплая тарелка: крупа + белок + овощи + зелень.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Ужины</summary>
+        <ul class="soft-list">
+          <li>Печёночные котлеты + огурцы, помидоры, петрушка + немного риса, если голодно.</li>
+          <li>Яйцо/омлет + овощи + зелень, если хочется лёгкий ужин.</li>
+          <li>Нут или фасоль лучше промыть и взять небольшую порцию, чтобы ужин не был тяжёлым.</li>
+          <li>Сырники лучше оставить на завтрак или дневной приём пищи, если вечером от сладкого/творожного сон хуже.</li>
+          <li>Ужин — за 2–3 часа до сна, без телефона и рабочих задач.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="panel">
+      <h2>Что отслеживать</h2>
+      <ul class="soft-list">
+        <li>становится ли меньше внутреннего напряжения;</li>
+        <li>легче ли расслабляться и останавливаться;</li>
+        <li>улучшается ли сон;</li>
+        <li>появляется ли больше ясности мышления;</li>
+        <li>снижается ли ощущение, что всё держится только на мне;</li>
+        <li>возвращается ли контакт с телом.</li>
+      </ul>
+      <div class="footer-actions">
+        <button class="secondary" id="exportButton" type="button">Скопировать сводку</button>
+        <button class="secondary" id="resetButton" type="button">Сбросить галочки</button>
+      </div>
+      <p class="hint">Умеренность и ритм — основа восстановления. Не через силу, а через бережное возвращение к телу. Ты справляешься.</p>
+    </section>
+    </div>
+
+    <div class="view" id="recommendationsView">
+      <section class="panel">
+        <h2>Основная задача протокола</h2>
+        <p class="hint">Этот протокол нужен, чтобы нервная система постепенно вышла из режима постоянной мобилизации и снова научилась переключаться в восстановление.</p>
+        <ul class="soft-list">
+          <li>вернуть когнитивную гибкость;</li>
+          <li>мыслить стратегически, а не только реагировать на нагрузку;</li>
+          <li>принимать решения из ясности;</li>
+          <li>уменьшить гиперконтроль и внутреннее давление;</li>
+          <li>снизить внутренний перегрев;</li>
+          <li>вывести накопленное напряжение через тело.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Что важно для нервной системы</h2>
+        <ul class="soft-list">
+          <li>ритм и повторяемость;</li>
+          <li>умеренность без рывков;</li>
+          <li>понятная структура без перегруза;</li>
+          <li>охлаждение и снижение стимуляции;</li>
+          <li>регулярная физическая разрядка;</li>
+          <li>мягкое возвращение контакта с телом.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Утро</h2>
+        <p class="hint">Задача утра — включить тело без гипернапряжения и не запускать нервную систему сразу в перегрузку.</p>
+        <ul class="soft-list">
+          <li>первый час после пробуждения не трогать телефон, новости и соцсети;</li>
+          <li>мягко включить тело: суставы, позвоночник, скручивания;</li>
+          <li>открыть шторы и дать естественному свету попасть на глаза;</li>
+          <li>выпить тёплую воду и поддержать пищеварение;</li>
+          <li>сделать дыхание с удлинённым выдохом;</li>
+          <li>простучать лимфатические зоны мягко, без давления;</li>
+          <li>контрастный душ делать без экстремального холода и преодоления.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Питание</h2>
+        <p class="hint">Питание помогает снижать внутренний перегрев, воспалительную нагрузку и зависимость от стимуляторов.</p>
+        <ul class="soft-list">
+          <li>не терпеть голод;</li>
+          <li>в каждом приёме пищи добавлять белок;</li>
+          <li>делать минимум половину тарелки клетчаткой;</li>
+          <li>пить 1,8–2 л воды, при необходимости подключать минеральную воду;</li>
+          <li>снижать перегревающую, острую и слишком стимулирующую пищу;</li>
+          <li>держать принцип здоровой тарелки: разные цвета, вкусы и клетчатка.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Здоровая тарелка</h2>
+        <p class="hint">Главная идея: в каждом приёме пищи собирать тарелку так, чтобы нервной системе было стабильно, телу было достаточно питания, а внутренний перегрев не усиливался.</p>
+        <ul class="soft-list">
+          <li>5 вкусов: кислый, горький, сладкий, пряный, солёный;</li>
+          <li>5 цветов: зелёный, красный, жёлтый/оранжевый, белый, тёмный;</li>
+          <li>клетчатка: зелень, овощи, фрукты, ягоды, орехи, семена;</li>
+          <li>белок в каждом приёме пищи;</li>
+          <li>полезные жиры и медленные углеводы по самочувствию.</li>
+        </ul>
+
+        <details>
+          <summary>Клетчатка</summary>
+          <ul class="soft-list">
+            <li>овощи: спаржа, фенхель, зелёная фасоль, все виды капусты, сельдерей, огурцы, артишоки, цукини, кабачки, перец, помидоры, зелёный горошек;</li>
+            <li>корнеплоды: морковь, свёкла, репа, редька, топинамбур, корень петрушки, пастернак, корень сельдерея, батат, тыква;</li>
+            <li>листовые: кейл, руккола, мангольд, шпинат, зелёный салат, кресс-салат, укроп, петрушка, базилик, щавель, эстрагон, латук;</li>
+            <li>водоросли и квашеные овощи без уксуса;</li>
+            <li>фрукты и ягоды: авокадо, несладкие яблоки, киви, цитрусовые, гранат, облепиха, клюква, брусника, малина, ежевика, клубника, голубика, черника, смородина.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Белок</summary>
+          <ul class="soft-list">
+            <li>рыба: скумбрия, палтус, сельдь, треска, дикий лосось, сардины, сайда, пикша, минтай, камбала, сибас, дорадо;</li>
+            <li>морепродукты: кальмары, мидии, гребешки, креветки, осьминоги, устрицы, крабы;</li>
+            <li>птица и яйца;</li>
+            <li>растительный белок: чечевица, нут, маш, фасоль, хумус;</li>
+            <li>грибы: шиитаке, ежовик, вешенки, опята, шампиньоны, портобелло, лисички;</li>
+            <li>сырой какао-порошок, какао-бобы.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Жиры</summary>
+          <ul class="soft-list">
+            <li>гхи, оливковое extra virgin, кокосовое extra virgin, масло авокадо, масло какао, MCT;</li>
+            <li>льняное, кунжутное, масло грецкого ореха, масло виноградной косточки;</li>
+            <li>источники жира: жирная дикая морская рыба, мясо, яйца, авокадо, орехи, семена льна, горький шоколад.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Медленные углеводы, орехи и семена</summary>
+          <ul class="soft-list">
+            <li>киноа, гречка, амарант, пшено;</li>
+            <li>паста твёрдых сортов 1–2 раза в неделю, не зерновая лапша, лапша из морских водорослей;</li>
+            <li>орехи: грецкие, миндаль, кедровые, пекан;</li>
+            <li>кокосовые продукты без добавок;</li>
+            <li>семена: подсолнечник, тыквенные, кунжут, лён, чиа, чёрный тмин, мак.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Специи, травы, приправы</summary>
+          <ul class="soft-list">
+            <li>свежие и сушёные травы: базилик, розмарин, тимьян, орегано, петрушка, укроп, мята, шалфей;</li>
+            <li>специи: имбирь, тмин, кумин, кориандр, фенхель, пажитник, лавровый лист, мускатный орех, корица, шафран, ваниль;</li>
+            <li>порошковые специи: куркума, имбирь, паприка, чили, кайенский перец, дижонская горчица;</li>
+            <li>органический уксус без сахара, кокосовые аминокислоты, морская или гималайская соль.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Горький вкус</summary>
+          <ul class="soft-list">
+            <li>зелень: петрушка, руккола, кейл, шпинат, листовой салат, цикорий, фризе, мангольд, листья одуванчика;</li>
+            <li>овощи: брокколи, брюссельская капуста, кольраби, редис, артишок, баклажан, репа, редька, корень сельдерея, дайкон, цукини;</li>
+            <li>фрукты и ягоды: грейпфрут, лимон, лайм, калина, клюква;</li>
+            <li>напитки: зелёный чай, какао, цикорий, чай из ромашки;</li>
+            <li>специи и семена: имбирь, куркума, розмарин, шалфей, тимьян, базилик, перец, кунжут, лён, чёрный тмин, расторопша.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="panel">
+        <h2>Движение</h2>
+        <p class="hint">Движение нужно не для рекордов, а для физиологической разрядки накопленной мобилизации.</p>
+        <ul class="soft-list">
+          <li>ежедневная ходьба на улице 30–40 минут;</li>
+          <li>ходьба с утяжелителями 1–2 раза в неделю, постепенно;</li>
+          <li>мышечная нагрузка 2–3 раза в неделю;</li>
+          <li>разрядка через тело минимум 1 раз в неделю;</li>
+          <li>не перегреваться и не тренироваться через истощение.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Вечер</h2>
+        <p class="hint">Задача вечера — вывести нервную систему из внутренней активности и подготовить тело ко сну.</p>
+        <ul class="soft-list">
+          <li>после 20:00 снижать свет и яркость экранов;</li>
+          <li>исключать рабочие задачи и активную умственную нагрузку;</li>
+          <li>убирать телефон, новости и стимулирующий контент за час до сна;</li>
+          <li>ужинать за 2–3 часа до сна;</li>
+          <li>делать дыхание через левую ноздрю 5–7 циклов;</li>
+          <li>ложиться до 23:00 в прохладной и тёмной комнате.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="view" id="pittaView">
+      <section class="panel">
+        <h2>Pitta: конституция огня</h2>
+        <p class="hint">Pitta — это энергия огня: горячая, яркая, активная, сильная. Это движение, стратегия, лидерство, способность зажигать людей и строить большие системы.</p>
+        <ul class="soft-list">
+          <li>нормостенический тип телосложения;</li>
+          <li>хорошая мышечная реактивность;</li>
+          <li>тепло, энергия, огонь в глазах;</li>
+          <li>любовь к жизни, юмор, яркость, вкус к впечатлениям;</li>
+          <li>интерес к соревнованию, результату, лидерству;</li>
+          <li>способность просчитывать шаги и видеть стратегию.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Сильная сторона Pitta</h2>
+        <p class="hint">Люди Pitta часто несут в мир идеи, организуют процессы, собирают вокруг себя людей и делают многое из любви к людям.</p>
+        <ul class="soft-list">
+          <li>новаторы, мотиваторы, предприниматели, стратеги;</li>
+          <li>быстро видят, как построить систему;</li>
+          <li>чувствуют неправду и несправедливость;</li>
+          <li>могут ярко проявляться, говорить, вести, зажигать;</li>
+          <li>их задача — светить, создавать, распределять дела и идти дальше.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Когда огонь уходит внутрь</h2>
+        <p class="hint">Если Pitta подавляет себя, подстраивается, закрывает интуицию и бизнес-жилку, огонь может начать работать внутрь: через гиперконтроль, раздражение, напряжение и самокритику.</p>
+        <ul class="soft-list">
+          <li>реакция на несправедливость становится слишком горячей;</li>
+          <li>появляется вина за свои эмоции;</li>
+          <li>растёт гиперконтроль и просчитывание рисков;</li>
+          <li>становится труднее расслабляться;</li>
+          <li>может появляться язвительность, внутренний перегрев, кожные реакции, головные боли;</li>
+          <li>снаружи реакция может быть небольшой, а внутри человек направляет большую часть огня на себя.</li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Что помогает Pitta</h2>
+        <ul class="soft-list">
+          <li>не подавлять проявление, а направлять огонь в действие и созидание;</li>
+          <li>не брать на себя слишком много, а распределять задачи;</li>
+          <li>поддерживать печень, желчный пузырь и пищеварение через режим и питание;</li>
+          <li>охлаждать нервную систему, снижать стимуляторы и перегрев;</li>
+          <li>двигаться, но не через истощение;</li>
+          <li>растягивать фасции, добавлять МФР и мягкое расслабление тела;</li>
+          <li>возвращаться к стратегии, миру и людям, а не жить только в контроле рисков.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "pitta-checklist-30-days-v1";
+    const START_KEY = "pitta-checklist-start-date-v1";
+    const DAY_COUNT = 30;
+    const DEFAULT_START_DATE = "2026-06-14";
+    const tabButtons = document.querySelectorAll(".top-tab");
+    const views = document.querySelectorAll(".view");
+    const sections = [
+      {
+        title: "Утро",
+        habits: [
+          "Телефон — не трогать 1 час",
+          "Суставная гимнастика лёжа",
+          "Световая регуляция (шторы)",
+          "Утренняя гигиена",
+          "Тёплая вода + масло чёрного тмина / тыквенное",
+          "Дыхательная практика (5–7 циклов, удлинённый выдох)",
+          "Лимфодренажные простукивания",
+          "Контрастный душ",
+          "Утренний коктейль с клетчаткой"
+        ]
+      },
+      {
+        title: "Питание",
+        habits: [
+          "Завтрак (белок + клетчатка, без телефона)",
+          "Обед (белок + клетчатка)",
+          "Ужин (за 2–3 часа до сна)",
+          "Вода 1,8–2 л + минеральная (Ессентуки / Донат)"
+        ]
+      },
+      {
+        title: "Движение",
+        habits: [
+          "Ходьба на улице 30–40 минут",
+          "Ходьба с утяжелителями (1–2 раза в неделю)",
+          "Упражнения с мышечной нагрузкой (2–3 раза в неделю)",
+          "Физическая разрядка / кундалини (1 раз в неделю)"
+        ]
+      },
+      {
+        title: "Вечер",
+        habits: [
+          "После 20:00 — снижаю свет",
+          "Исключить рабочие задачи вечером",
+          "Телефон убрать за 1 час до сна",
+          "Дыхание через левую ноздрю (5–7 циклов)",
+          "Лечь до 23:00"
+        ]
+      }
+    ];
+
+    const habits = sections.flatMap((section, sectionIndex) =>
+      section.habits.map((title, habitIndex) => ({
+        id: `${sectionIndex}-${habitIndex}`,
+        section: section.title,
+        title
+      }))
+    );
+
+    const mealIdeas = [
+      {
+        breakfast: "2 яйца + помидор + зелень + немного пшённой каши",
+        lunch: "Белок + рис/гречка + большая порция овощей и зелени",
+        dinner: "Печёночные котлеты или рыба + огурцы/помидоры + зелень"
+      },
+      {
+        breakfast: "Омлет с зеленью и помидорами + огурец",
+        lunch: "Нут/фасоль + овощной салат + оливковое масло",
+        dinner: "Лёгкий омлет или яйцо + овощи + петрушка"
+      },
+      {
+        breakfast: "Пшённая каша + яйцо/сырники + ягоды или яблоко",
+        lunch: "Птица/рыба + гречка или рис + зелёные овощи",
+        dinner: "Тёплые овощи + белок, без кофе и острого"
+      },
+      {
+        breakfast: "Сырники + ягоды + овощи/зелень отдельно",
+        lunch: "Печёночные котлеты + рис басмати + салат",
+        dinner: "Небольшая порция бобовых + огурец, помидор, зелень"
+      },
+      {
+        breakfast: "Яйца + зелень + овощи + кофе после еды",
+        lunch: "Тёплая тарелка: крупа + белок + овощи + зелень",
+        dinner: "Белок + много клетчатки, крупу добавить только если голодно"
+      }
+    ];
+
+    let state = loadState();
+    let activeDay = 1;
+
+    const dayCard = document.getElementById("dayCard");
+    const daysNav = document.getElementById("daysNav");
+    const startDateInput = document.getElementById("startDate");
+
+    function todayIso() {
+      const now = new Date();
+      const offset = now.getTimezoneOffset();
+      const local = new Date(now.getTime() - offset * 60000);
+      return local.toISOString().slice(0, 10);
+    }
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getStartDate() {
+      return localStorage.getItem(START_KEY) || DEFAULT_START_DATE;
+    }
+
+    function setStartDate(value) {
+      localStorage.setItem(START_KEY, value);
+    }
+
+    function dateForDay(day) {
+      const date = new Date(`${startDateInput.value}T12:00:00`);
+      date.setDate(date.getDate() + day - 1);
+      return date;
+    }
+
+    function dayForToday() {
+      const start = new Date(`${startDateInput.value}T12:00:00`);
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+      const diff = Math.round((today - start) / 86400000) + 1;
+      return Math.min(DAY_COUNT, Math.max(1, diff));
+    }
+
+    function formatDate(date) {
+      return new Intl.DateTimeFormat("ru-RU", {
+        day: "numeric",
+        month: "long",
+        weekday: "short"
+      }).format(date);
+    }
+
+    function keyFor(day, habitId) {
+      return `d${day}:${habitId}`;
+    }
+
+    function mealKey(day) {
+      return `meal:d${day}`;
+    }
+
+    function isDone(day, habitId) {
+      return Boolean(state[keyFor(day, habitId)]);
+    }
+
+    function countDay(day) {
+      return habits.filter((habit) => isDone(day, habit.id)).length;
+    }
+
+    function totalChecked() {
+      let count = 0;
+      for (let day = 1; day <= DAY_COUNT; day += 1) {
+        count += countDay(day);
+      }
+      return count;
+    }
+
+    function renderNav() {
+      daysNav.innerHTML = "";
+      for (let day = 1; day <= DAY_COUNT; day += 1) {
+        const button = document.createElement("button");
+        button.type = "button";
+        const isToday = day === dayForToday();
+        button.className = `day-tab${day === activeDay ? " active" : ""}${isToday ? " today" : ""}`;
+        button.textContent = day;
+        button.setAttribute("aria-label", `День ${day}`);
+        button.addEventListener("click", () => {
+          activeDay = day;
+          render();
+          document.getElementById("dayCard").scrollIntoView({ block: "start" });
+        });
+        daysNav.appendChild(button);
+      }
+    }
+
+    function renderDay() {
+      const done = countDay(activeDay);
+      const percent = Math.round((done / habits.length) * 100);
+      dayCard.innerHTML = "";
+
+      const head = document.createElement("div");
+      head.className = "day-head";
+      head.innerHTML = `
+        <div>
+          <h2>День ${activeDay}</h2>
+          <div class="day-date">${formatDate(dateForDay(activeDay))}</div>
+        </div>
+        <div class="day-score">${done}/${habits.length}<br>${percent}%</div>
+      `;
+      dayCard.appendChild(head);
+
+      const idea = mealIdeas[(activeDay - 1) % mealIdeas.length];
+      const mealBox = document.createElement("div");
+      mealBox.className = "meal-box";
+      mealBox.innerHTML = `
+        <h3>Питание дня</h3>
+        <p class="hint">Это не строгий план, а подсказка. Собирай тарелку по формуле: белок + клетчатка + полезные жиры + немного крупы/бобовых по голоду.</p>
+        <div class="meal-grid">
+          <div class="meal-card">
+            <strong>Завтрак</strong>
+            <p>${idea.breakfast}</p>
+          </div>
+          <div class="meal-card">
+            <strong>Обед</strong>
+            <p>${idea.lunch}</p>
+          </div>
+          <div class="meal-card">
+            <strong>Ужин</strong>
+            <p>${idea.dinner}</p>
+          </div>
+        </div>
+        <div class="meal-note">
+          <label for="meal-note-${activeDay}">Что есть дома / что планирую сегодня</label>
+          <textarea id="meal-note-${activeDay}" placeholder="Например: рис басмати, печёночные котлеты, огурцы, помидоры, петрушка...">${state[mealKey(activeDay)] || ""}</textarea>
+        </div>
+      `;
+      mealBox.querySelector("textarea").addEventListener("input", (event) => {
+        state[mealKey(activeDay)] = event.target.value;
+        if (!event.target.value.trim()) {
+          delete state[mealKey(activeDay)];
+        }
+        saveState();
+      });
+      dayCard.appendChild(mealBox);
+
+      sections.forEach((section, sectionIndex) => {
+        const block = document.createElement("div");
+        block.className = "section";
+
+        const title = document.createElement("h3");
+        title.textContent = section.title;
+        block.appendChild(title);
+
+        section.habits.forEach((habitTitle, habitIndex) => {
+          const id = `${sectionIndex}-${habitIndex}`;
+          const inputId = `day-${activeDay}-habit-${id}`;
+
+          const row = document.createElement("div");
+          row.className = "habit";
+          row.innerHTML = `
+            <input id="${inputId}" type="checkbox" ${isDone(activeDay, id) ? "checked" : ""}>
+            <label for="${inputId}">${habitTitle}</label>
+          `;
+
+          row.querySelector("input").addEventListener("change", (event) => {
+            state[keyFor(activeDay, id)] = event.target.checked;
+            if (!event.target.checked) {
+              delete state[keyFor(activeDay, id)];
+            }
+            saveState();
+            updateStats();
+            renderNav();
+            renderDay();
+          });
+
+          block.appendChild(row);
+        });
+
+        dayCard.appendChild(block);
+      });
+    }
+
+    function updateStats() {
+      const total = totalChecked();
+      const max = DAY_COUNT * habits.length;
+      const percent = Math.round((total / max) * 100);
+      const completeDays = Array.from({ length: DAY_COUNT }, (_, index) => index + 1)
+        .filter((day) => countDay(day) === habits.length).length;
+
+      document.getElementById("totalDone").textContent = `${total}/${max}`;
+      document.getElementById("totalPercent").textContent = `${percent}%`;
+      document.getElementById("daysComplete").textContent = `${completeDays}/${DAY_COUNT}`;
+      document.getElementById("totalFill").style.width = `${percent}%`;
+    }
+
+    function render() {
+      renderNav();
+      renderDay();
+      updateStats();
+    }
+
+    function openToday() {
+      activeDay = dayForToday();
+      render();
+    }
+
+    startDateInput.value = getStartDate();
+    activeDay = dayForToday();
+    startDateInput.addEventListener("change", () => {
+      setStartDate(startDateInput.value);
+      render();
+    });
+
+    document.getElementById("todayButton").addEventListener("click", openToday);
+
+    document.getElementById("exportButton").addEventListener("click", async () => {
+      const total = totalChecked();
+      const max = DAY_COUNT * habits.length;
+      const percent = Math.round((total / max) * 100);
+      const text = `Pitta чек-лист: выполнено ${total}/${max}, общий прогресс ${percent}%.`;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("Прогресс скопирован.");
+      } catch {
+        alert(text);
+      }
+    });
+
+    document.getElementById("resetButton").addEventListener("click", () => {
+      const ok = confirm("Сбросить все галочки в этом браузере?");
+      if (!ok) return;
+      state = {};
+      saveState();
+      render();
+    });
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.view;
+        tabButtons.forEach((item) => item.classList.toggle("active", item === button));
+        views.forEach((view) => view.classList.toggle("active", view.id === target));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
