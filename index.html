@@ -905,15 +905,18 @@
       {
         title: "Утро",
         habits: [
-          "Телефон — не трогать 1 час",
-          "Суставная гимнастика лёжа без скруток и боли",
-          "Световая регуляция (шторы)",
-          "Утренняя гигиена",
-          "Тёплая вода + масло чёрного тмина / тыквенное",
-          "Дыхательная практика (5–7 циклов, удлинённый выдох)",
-          "Лимфодренажные простукивания",
-          "Контрастный душ",
-          "Утренний коктейль с клетчаткой"
+          { id: "0-0", title: "Телефон — не трогать 1 час" },
+          { id: "0-1", title: "Суставная гимнастика лёжа без скруток и боли" },
+          { id: "0-2", title: "Световая регуляция (шторы)" },
+          { id: "0-3", title: "Утренняя гигиена" },
+          { id: "0-4", title: "Тёплая вода + масло чёрного тмина / тыквенное" },
+          { id: "0-5", title: "Дыхательная практика (5–7 циклов, удлинённый выдох)" },
+          { id: "0-6", title: "Лимфодренажные простукивания" },
+          { id: "0-7", title: "Контрастный душ" },
+          { id: "0-8", title: "Утренний коктейль с клетчаткой" },
+          { id: "0-9", title: "Лёжа на животе + локти — 3–5 раз, мягко" },
+          { id: "0-10", title: "Носки у стены — 5–10 раз спокойно" },
+          { id: "0-11", title: "Стоять на одной ноге — 10–20 секунд" }
         ]
       },
       {
@@ -947,10 +950,10 @@
     ];
 
     const habits = sections.flatMap((section, sectionIndex) =>
-      section.habits.map((title, habitIndex) => ({
-        id: `${sectionIndex}-${habitIndex}`,
+      section.habits.map((habit, habitIndex) => ({
+        id: typeof habit === "string" ? `${sectionIndex}-${habitIndex}` : habit.id,
         section: section.title,
-        title
+        title: typeof habit === "string" ? habit : habit.title
       }))
     );
 
@@ -1234,8 +1237,9 @@
         title.textContent = section.title;
         block.appendChild(title);
 
-        section.habits.forEach((habitTitle, habitIndex) => {
-          const id = `${sectionIndex}-${habitIndex}`;
+        section.habits.forEach((habit, habitIndex) => {
+          const id = typeof habit === "string" ? `${sectionIndex}-${habitIndex}` : habit.id;
+          const habitTitle = typeof habit === "string" ? habit : habit.title;
           const inputId = `day-${activeDay}-habit-${id}`;
 
           const row = document.createElement("div");
