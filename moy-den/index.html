@@ -61,6 +61,7 @@
 
 <section class="page" id="page-analytics" aria-label="Аналитика состояния и практик">
   <div class="section-title"><h2>Аналитика</h2><p>Динамика состояния и закономерности</p></div>
+  <div class="a-date-control"><label for="aAnalysisDate">Данные по дату</label><input type="date" id="aAnalysisDate" aria-label="Дата окончания периода аналитики"><button id="aAnalysisToday" type="button">Сегодня</button></div>
   <div class="a-period" role="group" aria-label="Период аналитики">
     <button type="button" data-analytics-range="7" class="selected" aria-pressed="true">7 дней</button>
     <button type="button" data-analytics-range="14" aria-pressed="false">14 дней</button>
@@ -75,8 +76,9 @@
     <div class="a-metrics" id="aExtra"></div>
   </section>
   <section class="a-card" aria-label="Практики и состояние">
-    <header><h3>Практики и состояние</h3><p>Доля выполненных действий за дни с отметками</p></header>
+    <header><h3>Практики и состояние</h3><p>Отмеченные практики за завершённые дни</p></header>
     <div id="aPractices"></div>
+    <p class="a-note" id="aTodayNote"></p>
     <div id="aWeekly"></div>
     <p class="a-note">Незаполненный день не считается невыполнением. Еженедельные практики подсчитываются отдельно.</p>
   </section>
@@ -124,7 +126,7 @@ const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 function save(){try{localStorage.setItem(KEY,JSON.stringify(db));$('saveStatus').textContent='Сохранено на этом устройстве';}catch(e){$('saveStatus').textContent='Не удалось сохранить — сделай копию';notify('Браузер не сохранил изменения')}}
 function notify(msg){let t=$('toaster');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800)}
 function navInit(){for(const id of ['desktopNav','mobileNav']){const target=$(id);target.innerHTML=PAGES.map(([k,n],i)=>`<button type="button" data-page="${k}"><span class="${id==='desktopNav'?'nav-index':'mobile-hidden'}">0${i+1}</span>${n}</button>`).join('');target.addEventListener('click',ev=>{const b=ev.target.closest('[data-page]');if(b)goto(b.dataset.page)})}}
-function goto(p){page=p;document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(el=>{el.classList.toggle('active',el.dataset.page===p);el.setAttribute('aria-current',el.dataset.page===p?'page':'false')});window.scrollTo({top:0,behavior:'smooth'})}
+function goto(p){page=p;document.body.classList.toggle('analytics-active',p==='analytics');document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(el=>{el.classList.toggle('active',el.dataset.page===p);el.setAttribute('aria-current',el.dataset.page===p?'page':'false')});window.scrollTo({top:0,behavior:'smooth'})}
 function checklistHtml(cat){return CATS[cat].map(([id,label,period])=>`<label class="checkrow"><input type="checkbox" data-check="${id}"><span class="label">${escapeHTML(label)}${period?`<span class="check-meta">${escapeHTML(period)}</span>`:''}</span></label>`).join('')}
 function scaleHtml(key){return `<div class="scale-row" data-scale="${key}"><span class="field-label">${escapeHTML(SCALES[key])}</span><div class="score-buttons" role="group" aria-label="${escapeHTML(SCALES[key])}">${[1,2,3,4,5].map(v=>`<button type="button" data-score="${key}" data-value="${v}" aria-pressed="false">${v}</button>`).join('')}</div></div>`}
 function init(){navInit();for(let c of Object.keys(CATS))$(c+'List').innerHTML=checklistHtml(c);$('waterInProtocol').innerHTML=scaleHtml('water');$('waterScale').innerHTML=scaleHtml('water');$('sleepScales').innerHTML=scaleHtml('sleepQuality')+scaleHtml('morningEnergy')+scaleHtml('anxiety');$('generalStateScales').innerHTML=scaleHtml('tension')+scaleHtml('support');$('snacksChoice').innerHTML=['Да','Нет'].map(t=>`<button type="button" data-snacks="${t}">${t}</button>`).join('');$('ascesisFields').innerHTML=ASCESIS.map(([id,label,ph])=>`<div class="ask-row"><div><strong>${label} — 1 час</strong><span>Отметь выполнение за выбранный день</span></div><label class="checkrow"><input type="checkbox" data-asc="${id}" aria-label="${label} — 1 час выполнено"><span class="label"></span></label></div><div class="field ask-text small"><textarea data-bind="${id}Note" placeholder="${ph}"></textarea></div>`).join('');
@@ -171,7 +173,34 @@ valid?`• День аскезы: ${n}/76 (17.10–31.12.2026)`:'• Перио�
 async function copy(str){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(str);notify('Полная рефлексия скопирована')}else throw new Error('No clipboard');}catch(e){$('exportText').value=str;$('modalBackdrop').classList.add('open');$('exportText').focus();$('exportText').select();try{if(document.execCommand('copy'))notify('Полная рефлексия скопирована');else notify('Выдели текст и выбери «Скопировать»')}catch(ex){notify('Выдели текст и выбери «Скопировать»')}}}
 function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='vedi-vibe-reflections-backup-'+localYMD(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify('Резервная копия создана')}
 function backupPitta(){const legacyState=localStorage.getItem('pitta-checklist-30-days-v1');const legacyStart=localStorage.getItem('pitta-checklist-start-date-v1');if(legacyState===null&&legacyStart===null){notify('На этом устройстве архив Pitta не найден');return;}const payload={source:'pitta-checklist',exportedAt:new Date().toISOString(),items:{'pitta-checklist-30-days-v1':legacyState,'pitta-checklist-start-date-v1':legacyStart}};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});let link=URL.createObjectURL(blob);let a=document.createElement('a');a.href=link;a.download='pitta-original-backup-'+localYMD(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(link),1000);notify('Архив старого Pitta создан. Его данные не менялись.');}
-async function restore(e){let file=e.target.files[0];if(!file)return;try{let val=JSON.parse(await file.text());if(!val||typeof val.records!=='object'||Array.isArray(val.records))throw new Error('format');if(!confirm('Восстановить записи из выбранного файла? Текущие данные в этом браузере будут заменены.'))return;db=val;save();refresh();notify('Записи восстановлены')}catch(err){notify('Не удалось прочитать резервную копию')}finally{e.target.value=''}}
+function validBackup(obj){
+ const plain=x=>x!==null&&typeof x==='object'&&!Array.isArray(x)&&Object.getPrototypeOf(x)===Object.prototype;
+ if(!plain(obj)||!plain(obj.records))return false;
+ const dates=Object.entries(obj.records);
+ return dates.every(([stamp,rec])=>{
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(stamp)||Number.isNaN(new Date(stamp+'T12:00:00').getTime())||!plain(rec))return false;
+  for(const key of ['checks','fields','scores','ascesis'])if(rec[key]!==undefined&&!plain(rec[key]))return false;
+  if(rec.snacks!==undefined&&!['','Да','Нет'].includes(rec.snacks))return false;
+  return Object.values(rec.checks||{}).every(x=>typeof x==='boolean')&&
+   Object.values(rec.fields||{}).every(x=>typeof x==='string')&&
+   Object.values(rec.scores||{}).every(x=>x===null||(Number.isInteger(x)&&x>=1&&x<=5))&&
+   Object.values(rec.ascesis||{}).every(x=>typeof x==='boolean');
+ });
+}
+async function restore(e){
+ const file=e.target.files[0];if(!file)return;
+ try{
+  const imported=JSON.parse(await file.text());
+  if(!validBackup(imported))throw new Error('format');
+  if(!confirm('Восстановить записи из выбранного файла? Текущие данные в этом браузере будут заменены.'))return;
+  const payload=JSON.stringify(imported);
+  localStorage.setItem(KEY,payload); // Commit only after fully validating the archive; do not change db on write failure.
+  db=imported;
+  $('saveStatus').textContent='Сохранено на этом устройстве';
+  refresh();notify('Записи восстановлены');
+ }catch(err){notify('Не удалось восстановить архив — текущие записи не изменены')}
+ finally{e.target.value=''}
+}
 init();})();
 </script><script src="./analytics.js"></script></body></html>
 
