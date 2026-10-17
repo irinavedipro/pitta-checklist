@@ -11,6 +11,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
 <link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./analytics.css">
 <style>
 .mobile-data-actions{display:none}
 @media(max-width:820px){.mobile-data-actions{display:flex;flex-wrap:wrap;gap:7px;margin:25px 0 10px}.mobile-data-actions button{background:#FAF7F1;border:1px solid #C9BEB5;color:#302629;border-radius:10px;padding:9px 11px;font-size:11px}}
@@ -58,6 +59,41 @@
 
 <section class="page" id="page-ascesis" aria-label="Аскеза"><div class="section-title"><h2>Аскеза</h2><p>Два самостоятельных трекера</p></div><div class="ask-grid"><div class="card"><div class="card-header"><div><h3>Мантра ЛЯМ 108 раз</h3><p class="card-sub">Начало 05.09.2026 · цель 45 выполнений</p></div></div><div class="ask-count"><strong id="mantraCounter">35</strong><small>из 45 выполнений</small></div><div class="progress-line"><span id="mantraLine"></span></div><div class="note" id="mantraExplanation"></div><div class="ask-row"><div><strong>Сегодня: мантра ЛЯМ 108 раз</strong><span>Отметь выполнение за выбранный день</span></div><label class="checkrow"><input id="mantraCheck" type="checkbox" aria-label="Мантра ЛЯМ 108 раз выполнена"><span class="label"></span></label></div><div class="aside-state"><strong>Основание расчёта:</strong> 35 выполнений по состоянию на 16.10.2026, с учётом семи пропусков по твоим словам. Даты прошлых пропусков неизвестны и не восстанавливаются автоматически.</div></div><div class="card"><div class="card-header"><div><h3>Учиться · Проявленность · Продажа</h3><p class="card-sub">17.10—31.12.2026 · 76 календарных дней</p></div></div><div class="ask-count"><strong id="ascesisDay">1</strong><small id="ascesisDayCaption">день из 76</small></div><div class="progress-line"><span id="ascesisLine"></span></div><div class="note">По одному часу на каждое направление, каждый день. Три независимые отметки.</div><div id="ascesisFields"></div></div></div></section>
 
+<section class="page" id="page-analytics" aria-label="Аналитика состояния и практик">
+  <div class="section-title"><h2>Аналитика</h2><p>Динамика состояния и закономерности</p></div>
+  <div class="a-period" role="group" aria-label="Период аналитики">
+    <button type="button" data-analytics-range="7" class="selected" aria-pressed="true">7 дней</button>
+    <button type="button" data-analytics-range="14" aria-pressed="false">14 дней</button>
+    <button type="button" data-analytics-range="30" aria-pressed="false">30 дней</button>
+  </div>
+  <p class="a-period-label" id="aPeriodLabel"></p>
+  <div class="a-summary" id="aSummary" aria-live="polite"></div>
+  <section class="a-card" aria-label="Динамика состояния">
+    <header><h3>Динамика состояния</h3><p>Энергия, тревога и ощущение опоры · шкала 1–5</p></header>
+    <div class="a-legend" aria-label="Цвета графиков"><span><b class="energy"></b> Энергия</span><span><b class="anxiety"></b> Тревога</span><span><b class="support"></b> Опора</span></div>
+    <div id="aChart" class="a-chart" role="img" aria-label="Графики энергии, тревоги и опоры по дням"></div>
+    <div class="a-metrics" id="aExtra"></div>
+  </section>
+  <section class="a-card" aria-label="Практики и состояние">
+    <header><h3>Практики и состояние</h3><p>Доля выполненных действий за дни с отметками</p></header>
+    <div id="aPractices"></div>
+    <div id="aWeekly"></div>
+    <p class="a-note">Незаполненный день не считается невыполнением. Еженедельные практики подсчитываются отдельно.</p>
+  </section>
+  <div class="a-pair">
+    <section class="a-card" aria-label="Закономерности">
+      <header><h3>Закономерности</h3><p>Наблюдения по сопоставимым дням</p></header>
+      <div id="aInsights"></div>
+      <p class="a-micro">Совпадение показателей не доказывает причину. Выводы появляются только при достаточном числе сравнимых записей.</p>
+    </section>
+    <section class="a-card" aria-label="Аскезы">
+      <header><h3>Аскезы</h3><p>Прогресс по личным отметкам</p></header>
+      <div id="aAscesis"></div>
+    </section>
+  </div>
+  <p class="a-note">Показатели берутся только из «Моего дня» в этом браузере. Голосовые сообщения, текст рефлексий и внешние сервисы не используются.</p>
+</section>
+
 <div class="mobile-data-actions"><button type="button" id="backupMobile">↓ Скачать резервную копию</button><button type="button" id="restoreMobile">↑ Восстановить из файла</button><button type="button" id="legacyMobile">↓ Архив старого Pitta</button></div>
 <div class="footer-action"><div><strong>Твоя рефлексия — целиком</strong><small>Все рубрики и показатели за выбранный день</small></div><div class="action-buttons"><button class="secondary" id="previewExport">Посмотреть текст</button><button class="primary" id="copyAll"><span>⧉</span> Скопировать всю рефлексию</button></div></div><p class="footnote">Записи сохраняются только в браузере этого устройства, без синхронизации. При закреплении на экране iPhone хранилище может отличаться от Safari. Делай резервные копии. <a href="../" rel="noopener">Прежний Pitta-чек-лист</a> остался без изменений.</p>
 </div></main></div>
@@ -76,7 +112,7 @@ const dailyTasks=[...CATS.morning,...CATS.food,CATS.move[0],...CATS.evening];
 const SCALES={sleepQuality:'Качество сна (от 1 до 5)',morningEnergy:'Уровень энергии утром (от 1 до 5)',anxiety:'Уровень тревоги в течение дня (от 1 до 5)',water:'Питьевой режим (от 1 до 5)',tension:'Напряжение',support:'Самодостаточность ↔ Опора'};
 const ASCESIS=[['learn','Учиться','Где училась, что изучала...'],['presence','Проявленность','Как и где проявлялась...'],['sales','Продажа','Какие действия предпринимала...']];
 const REFLECT=[['feelDay','что чувствовал в течении дня:'],['feelBright','яркие эмоции -'],['feelSuppressed','Подавила -'],['actionOps','операционные действия:'],['actionSys','Системные действия:'],['gratitude','Благодарности'],['lab1','Что я на самом деле хочу?'],['lab2','Где сегодня я была самостоятельной и осталась в связи? Что существовало между нами помимо нужды и пользы?'],['lab3','Какое доказательство новой связи я получила?'],['lab4','Где сегодня я почувствовала, что жизнь поддерживает меня и мне не нужно всё создавать и удерживать одной?']];
-const PAGES=[['protocol','Протокол'],['state','Состояние'],['reflection','Рефлексия'],['ascesis','Аскеза']];
+const PAGES=[['protocol','Протокол'],['state','Состояние'],['reflection','Рефлексия'],['ascesis','Аскеза'],['analytics','Аналитика']];
 const $=id=>document.getElementById(id);
 let db={version:1,records:{}};try{const old=JSON.parse(localStorage.getItem(KEY)||'null');if(old && old.records && typeof old.records==='object')db=old;}catch(e){}
 const localYMD=date=>{const y=date.getFullYear();const m=String(date.getMonth()+1).padStart(2,'0');const d=String(date.getDate()).padStart(2,'0');return `${y}-${m}-${d}`};
@@ -137,6 +173,6 @@ function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'applicati
 function backupPitta(){const legacyState=localStorage.getItem('pitta-checklist-30-days-v1');const legacyStart=localStorage.getItem('pitta-checklist-start-date-v1');if(legacyState===null&&legacyStart===null){notify('На этом устройстве архив Pitta не найден');return;}const payload={source:'pitta-checklist',exportedAt:new Date().toISOString(),items:{'pitta-checklist-30-days-v1':legacyState,'pitta-checklist-start-date-v1':legacyStart}};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});let link=URL.createObjectURL(blob);let a=document.createElement('a');a.href=link;a.download='pitta-original-backup-'+localYMD(new Date())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(link),1000);notify('Архив старого Pitta создан. Его данные не менялись.');}
 async function restore(e){let file=e.target.files[0];if(!file)return;try{let val=JSON.parse(await file.text());if(!val||typeof val.records!=='object'||Array.isArray(val.records))throw new Error('format');if(!confirm('Восстановить записи из выбранного файла? Текущие данные в этом браузере будут заменены.'))return;db=val;save();refresh();notify('Записи восстановлены')}catch(err){notify('Не удалось прочитать резервную копию')}finally{e.target.value=''}}
 init();})();
-</script></body></html>
+</script><script src="./analytics.js"></script></body></html>
 
 <!-- v1 review / 2026-10-17. Artwork: approved original on user Google Drive; do not replace. Legacy Pitta stays at ../ -->
