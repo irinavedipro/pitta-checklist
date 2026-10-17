@@ -1,0 +1,23 @@
+{
+  "name": "Мой день · Веди Вайб",
+  "short_name": "Мой день",
+  "description": "Личный протокол и рефлексия — Веди Вайб",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2EEE7",
+  "theme_color": "#2F2526",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
