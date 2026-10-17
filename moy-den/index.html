@@ -152,7 +152,7 @@ const afterBase=Object.entries(db.records).filter(([d,x])=>d>='2026-10-17' && d<
 let n=dateDiff('2026-10-17',date)+1;let inRange=n>0 && n<=76;let future=n>76;let showNum=Math.max(0,Math.min(76,n));$('ascesisDay').textContent=String(showNum);$('ascesisDayCaption').textContent='день из 76';$('ascesisLine').style.width=(showNum/76*100)+'%';document.querySelectorAll('[data-asc]').forEach(e=>{e.disabled=!inRange});$('ascesisFields').querySelectorAll('textarea').forEach(e=>{e.disabled=!inRange});$('ascesisDay').parentNode.title=inRange?'17.10–31.12.2026':future?'Период аскезы завершён':'Аскеза ещё не началась';
 $('mantraCheck').disabled=date<'2026-10-17';
 }
-function stringifyChecks(section){return CATS[section].map(([id,text])=>(day().checks[id]?'✅ ':'○ ')+text).join('\n')}
+function stringifyChecks(section){return CATS[section].map(([id,text])=>(day().checks[id]?'✓ ':'○ ')+text).join('\n')}
 function val(x){return x===undefined||x===null||String(x).trim()===''?'—':String(x).trim()}
 function makeExport(){let d=day(),f=d.fields,s=d.scores,n=dateDiff('2026-10-17',date)+1,valid=n>0&&n<=76;
 let incAscesis=Object.entries(db.records).filter(([ds,r])=>ds>='2026-10-17'&&ds<=date&&r.ascesis?.mantra).length;
@@ -160,10 +160,10 @@ let out=[`Форма ежедневного трекинга: ${asDate(date).toL
 'Тело:',`• Время отхода ко сну - ${val(f.sleepAt)}`,`• Время пробуждения - ${val(f.wakeAt)}`,`• ${SCALES.sleepQuality} - ${val(s.sleepQuality)}`,`• ${SCALES.morningEnergy} - ${val(s.morningEnergy)}`,`• ${SCALES.anxiety} - ${val(s.anxiety)}`,`• Перекусы (да/нет) - ${val(d.snacks)}`,`• ${SCALES.water} - ${val(s.water)}`,'',
 'МОЙ ПРОТОКОЛ','Утро:',stringifyChecks('morning'),'','Питание и вода:',stringifyChecks('food'),'','Движение:',stringifyChecks('move'),'','Вечер:',stringifyChecks('evening'),'','ДНЕВНИК СОСТОЯНИЯ:',`• Напряжение (от 1 до 5) - ${val(s.tension)}`,`• Самодостаточность ↔ Опора (от 1 до 5) - ${val(s.support)}`,`• Заметки - ${val(f.notes)}`,'',
 'Чувства:',...REFLECT.slice(0,3).map(([id,l])=>`• ${l} ${val(f[id])}`),'',
-'Аскеза:',`• Мантра ЛЯМ 108 раз — ${d.ascesis.mantra?'✅':'○'}; выполнено ${35+incAscesis}/45`,
-`• Учиться — 1 час — ${d.ascesis.learn?'✅':'○'}; ${val(f.learnNote)}`,
-`• Проявленность — 1 час — ${d.ascesis.presence?'✅':'○'}; ${val(f.presenceNote)}`,
-`• Продажа — 1 час — ${d.ascesis.sales?'✅':'○'}; ${val(f.salesNote)}`,
+'Аскеза:',`• Мантра ЛЯМ 108 раз — ${d.ascesis.mantra?'✓':'○'}; выполнено ${35+incAscesis}/45`,
+`• Учиться — 1 час — ${d.ascesis.learn?'✓':'○'}; ${val(f.learnNote)}`,
+`• Проявленность — 1 час — ${d.ascesis.presence?'✓':'○'}; ${val(f.presenceNote)}`,
+`• Продажа — 1 час — ${d.ascesis.sales?'✓':'○'}; ${val(f.salesNote)}`,
 valid?`• День аскезы: ${n}/76 (17.10–31.12.2026)`:'• Период аскезы: 17.10–31.12.2026','',
 'Действия:',`• операционные действия: ${val(f.actionOps)}`,`• Системные действия: ${val(f.actionSys)}`,'',
 'Благодарности',val(f.gratitude),'',
