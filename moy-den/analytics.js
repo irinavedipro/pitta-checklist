@@ -1,8 +1,10 @@
 /* v1: read-only analytics; the approved storage key, save and export are untouched. */
 (function(){'use strict';
 const KEY='vedi-vibe-daily-preview-v1',q=id=>document.getElementById(id);
-const all={morning:['massage','noPhoneAM','joints','curtains','hygiene','oilWater','breathAM','tapping','contrast','cocktail'],food:['breakfast','lunch','dinner','mineral'],move:['walk'],evening:['dim','noWork','noPhonePM','leftBreath','bed23']};
+const all={morning:['massage','noPhoneAM','joints','parovozik','krugi','curtains','hygiene','oilWater','breathAM','tapping','contrast','cocktail'],food:['breakfast','lunch','dinner','mineral'],move:['walk'],evening:['dim','noWork','noPhonePM','leftBreath','bed23']};
 const week=['strength','kundalini','chakra'];
+const NEW_MORNING_START='2026-10-18',NEW_MORNING_IDS=new Set(['parovozik','krugi']);
+const applicable=(ids,stamp,checks)=>ids.filter(id=>!NEW_MORNING_IDS.has(id)||stamp>=NEW_MORNING_START||checks?.[id]===true);
 let range=7;
 function ymd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 const asDate=s=>new Date(s+'T12:00:00');
@@ -41,7 +43,7 @@ function extra(rows){q('aExtra').innerHTML=[['sleepQuality','Качество с
 function practices(rows,end,db){
  const names=[['morning','Утро'],['evening','Вечер'],['move','Ходьба'],['food','Питание']];
  q('aPractices').innerHTML=names.map(([key,name])=>{const tasks=all[key];const today=ymd(new Date());const observed=rows.filter(x=>x.stamp<today&&tasks.some(id=>Object.prototype.hasOwnProperty.call(x.rec.checks||{},id)));
- const total=observed.length*tasks.length,done=observed.reduce((sum,x)=>sum+tasks.filter(id=>x.rec.checks?.[id]===true).length,0),p=total?Math.round(100*done/total):0;
+ const total=observed.reduce((sum,x)=>sum+applicable(tasks,x.stamp,x.rec.checks).length,0),done=observed.reduce((sum,x)=>sum+applicable(tasks,x.stamp,x.rec.checks).filter(id=>x.rec.checks?.[id]===true).length,0),p=total?Math.round(100*done/total):0;
  return `<div class="a-row"><div><strong>${html(name)}</strong><small>Завершённых дней с отметками: ${observed.length}</small></div><div class="a-progress" role="progressbar" aria-label="${html(name)}: ${done} из ${total}" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%"></i></div><div class="a-value">${total?p+'%':'—'}<small>${total?`${done}/${total}`:'Нет данных'}</small></div></div>`}).join('');
  const d=asDate(end);d.setDate(d.getDate()-(d.getDay()+6)%7);const monday=ymd(d);
  const counts=week.map(k=>Array.from({length:7},(_,i)=>{const stamp=shift(monday,i);return stamp<=end&&db[stamp]?.checks?.[k]===true?1:0}).reduce((a,b)=>a+b,0));
