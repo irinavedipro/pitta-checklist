@@ -154,7 +154,7 @@ function weekCount(id){let base=monday(date);let c=0;for(let [stamp,rec] of Obje
 function refreshStats(){let rec=day(),eligible=applicableTasks(dailyTasks,date,rec.checks),total=eligible.length,done=eligible.filter(([id])=>rec.checks[id]===true).length,pct=Math.round(done/total*100);
 $('morningCountLabel').textContent='Начало дня · '+applicableTasks(CATS.morning,date,rec.checks).length+' практик';$('dailyDone').textContent=done+'/'+total;$('progressPercent').textContent=pct+'%';$('progressRing').style.background=`conic-gradient(var(--rose) ${pct*3.6}deg,rgba(226,160,143,.16) 0)`;
 for(let cat of ['morning','food','evening']){let tasks=applicableTasks(CATS[cat],date,rec.checks);$(cat+'Stat').textContent=tasks.filter(([id])=>rec.checks[id]===true).length+'/'+tasks.length}
-$('weeklyStatus').innerHTML='<div class="weekly-head">За эту неделю · без штрафа за дни отдыха</div>'+CATS.move.slice(1).map(([id,name],idx)=>`<div class="weekly-row">${escapeHTML(name)} <span class="chip">${weekCount(id)} ${idx===0?'/ 2–3':'/ 1'} раз</span></div>`).join('');
+$('weeklyStatus').innerHTML='<div class="weekly-head">За эту неделю</div>'+CATS.move.slice(1).map(([id,name],idx)=>`<div class="weekly-row">${escapeHTML(name)} <span class="chip">${weekCount(id)} ${idx===0?'/ 2–3':'/ 1'} раз</span></div>`).join('');
 const afterBase=Object.entries(db.records).filter(([stamp,rec])=>stamp>='2026-10-17'&&rec.ascesis?.mantra===true).length;const mantraCount=35+afterBase;$('mantraCounter').textContent=String(mantraCount);$('mantraLine').style.width=Math.min(100,mantraCount/45*100)+'%';$('mantraExplanation').textContent=mantraCount>=45?'Цель достигнута. Аскеза завершена.':'Историческая цель: 45 выполнений; по архивным отметкам '+mantraCount+'/45.';
 
 
