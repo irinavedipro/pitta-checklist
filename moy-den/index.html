@@ -58,7 +58,7 @@
 
 <section class="page" id="page-reflection" aria-label="Рефлексия"><div class="section-title"><h2>Рефлексия</h2><p>Чувства, действия, благодарности и вопросы для размышления</p></div><div class="ref-grid"><div class="card"><div class="card-header"><div><h3>Чувства</h3></div></div><div class="field small"><label class="field-label" for="feel1">что чувствовал в течении дня:</label><textarea id="feel1" data-bind="feelDay" placeholder="..."></textarea></div><div class="field small"><label class="field-label" for="feel2">яркие эмоции -</label><textarea id="feel2" data-bind="feelBright" placeholder="..."></textarea></div><div class="field small"><label class="field-label" for="feel3">Подавила -</label><textarea id="feel3" data-bind="feelSuppressed" placeholder="..."></textarea></div></div><div class="card"><div class="card-header"><div><h3>Действия</h3></div></div><div class="field"><label class="field-label" for="action1">операционные действия:</label><textarea id="action1" data-bind="actionOps" placeholder="..."></textarea></div><div class="field"><label class="field-label" for="action2">Системные действия:</label><textarea id="action2" data-bind="actionSys" placeholder="..."></textarea></div><div class="field"><label class="field-label" for="gratitude">Благодарности</label><textarea id="gratitude" data-bind="gratitude" placeholder="..."></textarea></div></div></div><div class="section-title"><h2>Лабораторный протокол</h2><p id="labSubtitle">Формулировки из исходного документа</p></div><div class="grid"><div class="card"><div class="field"><label class="field-label" data-lab-label="lab1">Что я на самом деле хочу?</label><textarea data-bind="lab1" placeholder="..."></textarea></div><div class="field"><label class="field-label" data-lab-label="lab2">Где сегодня я была самостоятельной и осталась в связи? Что существовало между нами помимо нужды и пользы?</label><textarea data-bind="lab2" placeholder="Контакт с собой тоже можно описать..."></textarea></div></div><div class="card"><div class="field"><label class="field-label" data-lab-label="lab3">Какое доказательство новой связи я получила?</label><textarea data-bind="lab3" placeholder="..."></textarea></div><div class="field"><label class="field-label" data-lab-label="lab4">Где сегодня я почувствовала, что жизнь поддерживает меня и мне не нужно всё создавать и удерживать одной?</label><textarea data-bind="lab4" placeholder="..."></textarea></div></div></div></section>
 
-<section class="page" id="page-ascesis" aria-label="Аскезы — текущие и завершённые"><div class="section-title"><h2>Аскеза</h2><p>Текущие и завершённые практики</p></div><div class="ask-grid"><div class="card"><div class="card-header"><div><h3>Сейчас нет активной аскезы</h3><p class="card-sub">Новая практика появится здесь, когда ты её выберешь.</p></div></div></div><div class="card"><div class="card-header"><div><h3>Завершённые · Мантра ЛЯМ 108 раз</h3><p class="card-sub">Начало 05.09.2026 · цель 45 выполнений</p></div></div><div class="ask-count"><strong id="mantraCounter">45</strong><small>из 45 выполнений</small></div><div class="progress-line"><span id="mantraLine"></span></div><div class="note" id="mantraExplanation"></div><div class="aside-state">35 исторических выполнений учтены как исходная величина. Личные отметки по датам сохранены в истории.</div></div></div></section>
+<section class="page" id="page-ascesis" aria-label="Аскезы — текущие и завершённые"><div class="section-title"><h2>Аскеза</h2><p>Текущие и завершённые практики</p></div><div class="ask-grid"><div class="card"><div class="card-header"><div><h3>Подъём до 9:00 и дыхание капалапхати</h3><p class="card-sub">19.11.2026–02.01.2027 · 45 календарных дней</p></div></div><div class="ask-count"><strong id="newAscesisDay">1/45</strong><small id="newAscesisCaption">день аскезы</small></div><div class="progress-line"><span id="newAscesisLine"></span></div><div class="note" id="newAscesisCompleted">Полностью выполнено: 0 из 45 дней</div><div class="ask-row"><div><strong>Подъём до 9:00</strong><span>Отметь, если встала не позже 09:00</span></div><label class="checkrow"><input type="checkbox" data-new-asc="riseBy9" aria-label="Подъём до 9:00 выполнен"><span class="label"></span></label></div><div class="ask-row"><div><strong>Дыхание капалапхати</strong><span>В начале дня</span></div><label class="checkrow"><input type="checkbox" data-new-asc="kapalabhati" aria-label="Дыхание капалапхати выполнено в начале дня"><span class="label"></span></label></div><p class="note">День засчитывается только при двух выполненных практиках.</p></div><div class="card"><div class="card-header"><div><h3>Завершённые · Мантра ЛЯМ 108 раз</h3><p class="card-sub">Начало 05.09.2026 · цель 45 выполнений</p></div></div><div class="ask-count"><strong id="mantraCounter">45</strong><small>из 45 выполнений</small></div><div class="progress-line"><span id="mantraLine"></span></div><div class="note" id="mantraExplanation"></div><div class="aside-state">35 исторических выполнений учтены как исходная величина. Личные отметки по датам сохранены в истории.</div></div></div></section>
 
 <section class="page" id="page-analytics" aria-label="Аналитика состояния и практик">
   <div class="section-title"><h2>Аналитика</h2><p>Динамика состояния и закономерности</p></div>
@@ -111,6 +111,7 @@ food:[['breakfast','Завтрак (белок + клетчатка, без те
 move:[['walk','Ходьба на улице 30–40 минут'],['strength','Упражнения с мышечной нагрузкой (2–3 раза в неделю)','2–3 раза в неделю'],['kundalini','Кундалини / физическая разрядка (1 раз в неделю)','1 раз в неделю'],['chakra','Чакровое дыхание (1 раз в неделю)','1 раз в неделю']],
 evening:[['dim','Приглушить свет после 20:00'],['noWork','Исключить рабочие задачи вечером'],['noPhonePM','Убрать телефон за час до сна'],['leftBreath','Дыхание через левую ноздрю (5–7 циклов)'],['bed23','Лечь не позже 23:00']]};
 const weekly=['strength','kundalini','chakra'];
+const NEW_ASC_START='2026-11-19',NEW_ASC_END='2027-01-02',NEW_ASC_TOTAL=45;
 const dailyTasks=[...CATS.morning,...CATS.food,CATS.move[0],...CATS.evening];
 // New morning practices begin on 2026-10-18. Old days retain their historical totals.
 const NEW_MORNING_START='2026-10-18',NEW_MORNING_IDS=new Set(['parovozik','krugi']);
@@ -130,6 +131,8 @@ let date=localYMD(new Date()),page='protocol',toastTimer;
 const day=()=>{if(!db.records[date])db.records[date]={checks:{},fields:{},scores:{},ascesis:{},snacks:''};return db.records[date]};
 const asDate=s=>new Date(s+'T12:00:00');
 const dateDiff=(a,b)=>Math.round((asDate(b)-asDate(a))/86400000);
+function newAscesisDayNumber(stamp){return Math.max(0,Math.min(NEW_ASC_TOTAL,dateDiff(NEW_ASC_START,stamp)+1))}
+function newAscesisCompletedUntil(stamp){return Object.entries(db.records).filter(([d,r])=>d>=NEW_ASC_START&&d<=NEW_ASC_END&&d<=stamp&&r.ascesis?.riseBy9===true&&r.ascesis?.kapalabhati===true).length}
 const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function save(){try{localStorage.setItem(KEY,JSON.stringify(db));$('saveStatus').textContent='Сохранено на этом устройстве';}catch(e){$('saveStatus').textContent='Не удалось сохранить — сделай копию';notify('Браузер не сохранил изменения')}}
 function notify(msg){let t=$('toaster');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800)}
@@ -141,7 +144,7 @@ function init(){navInit();for(let c of Object.keys(CATS))$(c+'List').innerHTML=c
 $('selectedDate').addEventListener('change',e=>{if(e.target.value){date=e.target.value;refresh()}});
 $('prevDay').addEventListener('click',()=>shift(-1));$('nextDay').addEventListener('click',()=>shift(1));$('todayBtn').addEventListener('click',()=>{date=localYMD(new Date());refresh()});
 document.addEventListener('input',e=>{const key=e.target.dataset.bind;if(!key)return;day().fields[key]=e.target.value;save()});
-document.addEventListener('change',e=>{if(e.target.dataset.check){day().checks[e.target.dataset.check]=e.target.checked;save();refreshStats()}});
+document.addEventListener('change',e=>{if(e.target.dataset.check){day().checks[e.target.dataset.check]=e.target.checked;save();refreshStats()}if(e.target.dataset.newAsc){const rec=day();if(!rec.ascesis)rec.ascesis={};rec.ascesis[e.target.dataset.newAsc]=e.target.checked;save();refreshStats()}});
 
 
 document.addEventListener('click',e=>{let s=e.target.closest('[data-score]');if(s){let key=s.dataset.score;let v=Number(s.dataset.value);day().scores[key]=day().scores[key]===v?null:v;save();syncScale(key);return}let t=e.target.closest('[data-snacks]');if(t){day().snacks=day().snacks===t.dataset.snacks?'':t.dataset.snacks;save();syncSnacks()}});
@@ -160,6 +163,12 @@ $('morningCountLabel').textContent='Начало дня · '+applicableTasks(CAT
 for(let cat of ['morning','food','evening']){let tasks=applicableTasks(CATS[cat],date,rec.checks);$(cat+'Stat').textContent=tasks.filter(([id])=>rec.checks[id]===true).length+'/'+tasks.length}
 $('weeklyStatus').innerHTML='<div class="weekly-head">За эту неделю</div>'+CATS.move.slice(1).map(([id,name],idx)=>`<div class="weekly-row">${escapeHTML(name)} <span class="chip">${weekCount(id)} ${idx===0?'/ 2–3':'/ 1'} раз</span></div>`).join('');
 const afterBase=Object.entries(db.records).filter(([stamp,rec])=>stamp>='2026-10-17'&&rec.ascesis?.mantra===true).length;const mantraCount=35+afterBase;$('mantraCounter').textContent=String(mantraCount);$('mantraLine').style.width=Math.min(100,mantraCount/45*100)+'%';$('mantraExplanation').textContent=mantraCount>=45?'Цель достигнута. Аскеза завершена.':'Историческая цель: 45 выполнений; по архивным отметкам '+mantraCount+'/45.';
+const ascDateNum=newAscesisDayNumber(date),ascDateActive=date>=NEW_ASC_START&&date<=NEW_ASC_END;
+$('newAscesisDay').textContent=ascDateNum+'/45';
+$('newAscesisCaption').textContent=date<NEW_ASC_START?'начало 19 ноября':date>NEW_ASC_END?'период завершён':'день аскезы';
+$('newAscesisLine').style.width=Math.round(100*ascDateNum/NEW_ASC_TOTAL)+'%';
+$('newAscesisCompleted').textContent='Полностью выполнено: '+newAscesisCompletedUntil(date)+' из 45 дней';
+document.querySelectorAll('[data-new-asc]').forEach(el=>{el.checked=rec.ascesis?.[el.dataset.newAsc]===true;el.disabled=!ascDateActive});
 
 
 }
@@ -171,6 +180,14 @@ let out=[`Форма ежедневного трекинга: ${asDate(date).toL
 'Состояние:',`• Время отхода ко сну - ${val(f.sleepAt)}`,`• Время пробуждения - ${val(f.wakeAt)}`,`• ${SCALES.sleepQuality} - ${val(s.sleepQuality)}`,`• ${SCALES.morningEnergy} - ${val(s.morningEnergy)}`,`• ${SCALES.anxiety} - ${val(s.anxiety)}`,'',
 'МОЙ ПРОТОКОЛ','Утро:',stringifyChecks('morning'),'','Питание и вода:',stringifyChecks('food'),`• Перекусы (да/нет) - ${val(d.snacks)}`,`• ${SCALES.water} - ${val(s.water)}`,'','Движение:',stringifyChecks('move'),'','Вечер:',stringifyChecks('evening'),'','ДНЕВНИК СОСТОЯНИЯ:',`• Напряжение (от 1 до 5) - ${val(s.tension)}`,`• Самодостаточность ↔ Опора (от 1 до 5) - ${val(s.support)}`,`• Заметки - ${val(f.notes)}`,'',
 'Чувства:',...REFLECT.slice(0,3).map(([id,l])=>`• ${l} ${val(f[id])}`),'',
+...((date>=NEW_ASC_START&&date<=NEW_ASC_END)?[
+'Активная аскеза: Подъём до 9:00 и капалапхати',
+`• День аскезы: ${newAscesisDayNumber(date)}/45`,
+`• Подъём до 9:00 — ${d.ascesis?.riseBy9===true?'✓':'○'}`,
+`• Капалапхати в начале дня — ${d.ascesis?.kapalabhati===true?'✓':'○'}`,
+`• День полностью выполнен — ${d.ascesis?.riseBy9===true&&d.ascesis?.kapalabhati===true?'да':'нет'}`,
+`• Полностью выполнено: ${newAscesisCompletedUntil(date)}/45 дней`,''
+]:[]),
 'Завершённые аскезы:',`• Мантра ЛЯМ 108 раз — ${totalMantra>=45?'завершена':'учтено'}; ${totalMantra}/45 по сохранённым отметкам`,'',
 
 
@@ -211,6 +228,6 @@ async function restore(e){
  finally{e.target.value=''}
 }
 init();})();
-</script><script src="./analytics.js?v=20261107-protocol-revision"></script></body></html>
+</script><script src="./analytics.js?v=20261119-ascesis45"></script></body></html>
 
 <!-- v1 review / 2026-10-17. Artwork: approved original on user Google Drive; do not replace. Legacy Pitta stays at ../ -->
